@@ -3,9 +3,11 @@ import React, { Component } from 'react';
 //Import Apollo modules
 import ApolloClient from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
+import BookList from './components/BookList';
+import AddBook from './components/AddBook';
 
 // Components
-import BookList from "./components/BookList"; // <BookList />
+
 
 //Apollo Client Setup
 var root = "http://localhost:4000/graphql"
@@ -16,8 +18,9 @@ class App extends Component {
     return (
       <ApolloProvider client={client}>
       <div id="main">
-        <h1>Book List</h1>
+        <h1></h1>
         <BookList />
+        <AddBook />
       </div>
       </ApolloProvider>
     );
