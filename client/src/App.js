@@ -2,16 +2,14 @@ import React, { Component } from 'react';
 
 //Import Apollo modules
 import ApolloClient from 'apollo-boost';
-import ApolloProvider from 'react-apollo';
+import { ApolloProvider } from 'react-apollo';
 
 // Components
 import BookList from "./components/BookList"; // <BookList />
 
 //Apollo Client Setup
-var root = "https://chaseharrison-chaseh88.c9users.io/graphql"
-const client = new ApolloClient({
-  uri: root
-})
+var root = "http://localhost:4000/graphql"
+const client = new ApolloClient({uri: root})
 
 class App extends Component {
   render() {

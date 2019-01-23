@@ -2,6 +2,8 @@
 //Express
 const express = require("express");
 const app = express();
+//Port #
+const port = process.env.PORT || 4000;
 //GraphQL
 const graphqlHTTP = require("express-graphql");
 const mongoose = require("mongoose");
@@ -18,7 +20,7 @@ app.use(cors());
 const mlab = "mongodb://chase123:chase123@ds161144.mlab.com:61144/books-graphqlpractice";
 mongoose.connect(mlab, () => {
     console.log("Connected to the Database");
-});    
+});
 
 //When "/graphql" is called in the browser
 app.use("/graphql", graphqlHTTP({
@@ -31,17 +33,7 @@ app.get("/", (req, res) => {
    res.redirect("/graphql");
 });
 
-
-
-
-
-
-
-
-
-
-
 ////////////////////////////////////////////////////////
-app.listen(process.env.PORT, process.env.IP, function(){
+app.listen(port, process.env.IP, function(){
    console.log("Server has started");
 });
