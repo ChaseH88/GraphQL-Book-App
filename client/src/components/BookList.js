@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import {getBooksQuery} from '../query/main.js';
 import { graphql } from 'react-apollo';
+
+// Queries
+import {getBooksQuery} from '../query/main.js';
 
 class BookList extends Component {
   displayBooks(){
