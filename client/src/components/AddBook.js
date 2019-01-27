@@ -17,9 +17,24 @@ class AddBook extends Component {
             return(<option disabled checked>Loading Authors...</option>)
         } else {
             return data.authors.map(author => {
-                return(<option key={author.id}>{author.name}</option>)
+                return(<option value={author.id} key={author.id}>{author.name}</option>)
             })
         }
+    }
+    changeBook = (e) => {
+        this.setState({
+          name: e.target.value
+        })
+      }
+    changeGenre = (e) => {
+        this.setState({
+          genre: e.target.value
+        })
+      }
+    changeAuthor = (e) => {
+        this.setState({
+          authorId: e.target.value
+        })
     }
     addBook = (e) => {
         e.preventDefault();
@@ -37,26 +52,27 @@ class AddBook extends Component {
         })
     }
     render(){
-        console.log(this.props)
         return(
-            <form id="addBook" onSubmit={this.submitForm}>
+            <form id="addBook" onSubmit={this.addBook.bind(this)}>
                 <div className="field">
-                <label>Book name:</label>
-                <input type="text" onChange={e => this.setState({ name: e.target.value })} />
+                    <label>Book Name:</label>
+                    <input type="text" onChange={e => this.setState({ name: e.target.value })} />
                 </div>
                 <div className="field">
-                <label>Genre:</label>
-                <input type="text" onChange={e => this.setState({ genre: e.target.value })} />
+                    <label>Genre:</label>
+                    <input type="text" onChange={e => this.setState({ genre: e.target.value })} />
                 </div>
                 <div className="field">
-                <label>Author:</label>
-                <select onChange={e => this.setState({ authorId: e.target.value })}>
-                    <option>Select author</option>
-                    {this.displayAuthors()}
-                </select>
+                    <label>Author:</label>
+                    <select onChange={e => this.setState({ authorId: e.target.value })}>
+                        <option selected disabled>Select</option>
+                        {this.displayAuthors()}
+                    </select>
                 </div>
-        <button>+</button>
-      </form>
+                <div className="controls">
+                    <button>Add Book</button>
+                </div>
+            </form>
         )
     }
 }
