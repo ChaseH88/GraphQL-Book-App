@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { graphql } from 'react-apollo';
+import { graphql, compose } from 'react-apollo';
 
 // Queries
-import {getAuthorsQuery} from '../query/main.js';
+import {getAuthorsQuery, addBookMutation, getBooksQuery} from '../query/main.js';
 
 
 class AddBook extends Component {
@@ -12,7 +12,7 @@ class AddBook extends Component {
         authorId: ""
     }
     displayAuthors(){
-        var data = this.props.data
+        var data = this.props.getAuthorsQuery;
         if(data.loading){
             return(<option disabled checked>Loading Authors...</option>)
         } else {
@@ -21,49 +21,51 @@ class AddBook extends Component {
             })
         }
     }
-    changeBook = (e) => {
-        this.setState({
-          name: e.target.value
-        })
-      }
-    changeGenre = (e) => {
-        this.setState({
-          genre: e.target.value
-        })
-      }
-    changeAuthor = (e) => {
-        this.setState({
-          authorId: e.target.value
-        })
-    }
     addBook = (e) => {
         e.preventDefault();
         console.log(this.state);
+        // call the query
+        this.props.addBookMutation({
+            variables: {
+                name: this.state.name,
+                genre: this.state.genre,
+                authorId: this.state.authorId
+            },
+            refetchQueries: [{
+                query: getBooksQuery
+            }]
+        })
     }
     render(){
         console.log(this.props)
         return(
-            <form id="addBook" onSubmit={this.addBook.bind(this)}>
+            <form id="addBook" onSubmit={this.submitForm}>
                 <div className="field">
-                    <label>Book Name:</label>
-                    <input onChange={this.changeBook} type="text" />
-                </div>
-                <div className="field">
-                    <label>Genre:</label>
-                    <input onChange={this.changeGenre} type="text" />
+                <label>Book name:</label>
+                <input type="text" onChange={e => this.setState({ name: e.target.value })} />
                 </div>
                 <div className="field">
-                    <label>Author:</label>
-                    <select onChange={this.changeAuthor}>
-                        {this.displayAuthors()}
-                    </select>
+                <label>Genre:</label>
+                <input type="text" onChange={e => this.setState({ genre: e.target.value })} />
                 </div>
-                <div className="controls">
-                    <button>Add Book</button>
+                <div className="field">
+                <label>Author:</label>
+                <select onChange={e => this.setState({ authorId: e.target.value })}>
+                    <option>Select author</option>
+                    {this.displayAuthors()}
+                </select>
                 </div>
-            </form>
+        <button>+</button>
+      </form>
         )
     }
 }
 
-export default graphql(getAuthorsQuery)(AddBook)
+//For attaching multiple queries
+//Will return an object with the name of the query
+//--you gave it below and NOT the object named Data
+export default compose(
+    graphql(getAuthorsQuery, {name: "getAuthorsQuery"}),
+    graphql(addBookMutation, {name: "addBookMutation"})
+)(AddBook);
+
